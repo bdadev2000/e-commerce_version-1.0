@@ -2,6 +2,15 @@
 
 @section('title', 'Trang Chu')
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('admins/product/index/list.css') }}">
+@endsection
+
+@section('js')
+  <script src="{{ asset('vendors/sweetAlert2/sweetalert2@11.js') }}"></script>
+  <script src="{{ asset('admins/product/index/list.js') }}"></script>
+@endsection
+
 @section('content')
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -27,25 +36,32 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
+
             <tbody>
+                @foreach($products as $productItem)
                 <tr>
-                  <th scope="row">1 </th>
-                  <td>Iphone 12</td>
-                  <td>12.000.0000 vnd</td>
+                  <th scope="row">{{ $productItem->id }} </th>
+                  <td> {{ $productItem->name }} </td>
+                  <td>{{ number_format(floatVal($productItem->price)) }}</td>
                   <td>
-                      <img style="width:100px;" src="https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2020/10/14/637382632990998957_ip-12-xanhduong-1.png">
+                      <img class="product_image_150_100" src="{{ $productItem->feature_image_path }}">
                   </td>
-                  <td>Điện thoại</td>
+                  <td>{{ optional($productItem->category)->name }}</td>
                   <td>
-                    <a href="" class="btn btn-default">Edit</a>
-                    <a href="" class="btn btn-danger">Delete</a>
+                    <a href="{{ route('product.edit',['id'=>$productItem->id]) }}" class="btn btn-default">Edit</a>
+                    <a 
+                      href="" 
+                      class="btn btn-danger action_delete"
+                      data-url="{{ route('product.delete',['id' => $productItem->id]) }}"
+                    >Delete</a>
                   </td>
                 </tr>
+                @endforeach
             </tbody>
           </table>
         </div>
         <div class="col-md-12">
-  
+            {{ $products->links() }} 
         </div>
       </div>
     </div><!-- /.container-fluid -->

@@ -19,6 +19,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   
   @yield('css')
+
+  @yield('js')
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">

@@ -11,17 +11,16 @@
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('partials.content-header',['name' =>'Product', 'key'=> 'add'])
+    @include('partials.content-header',['name' =>'Product', 'key'=> 'edit'])
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('product.update',['id'=>$product->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-
                         <div class="form-group">
                             <label>Tên sản phẩm</label>
                             <input 
@@ -29,6 +28,7 @@
                                 class="form-control" 
                                 placeholder="Nhập tên sản phẩm"
                                 name="name"
+                                value="{{ $product->name }}"
                             >
                         </div>
                         
@@ -39,6 +39,8 @@
                                 class="form-control" 
                                 placeholder="Nhập giá sản phẩm"
                                 name="price"
+                                value="{{ $product->price }}"
+
                             >
                         </div>
 
@@ -49,6 +51,11 @@
                                 class="form-control-file" 
                                 name="feature_image_path"
                             >
+                            <div class="col-md-3 container_feature_image">
+                                <div class="row">
+                                    <img class="feature_image" src="{{ $product->feature_image_path }}">
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -59,6 +66,15 @@
                                 class="form-control-file" 
                                 name="image_path[]"
                             >
+                            <div class="col-md-12 container_image_detail">
+                                <div class="row">
+                                    @foreach($product->productImages as $productImageItem)        
+                                    <div class="col-md-2">
+                                        <img class="image_detail_product" src="{{ $productImageItem->image_path }}">
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -74,7 +90,9 @@
                         <div class="form-group">
                             <label>Nhập tags</label>
                             <select name="tags[]" class="form-control tags_select_choose" multiple="multiple">
-
+                                @foreach($product->tags as $tagItem)
+                                    <option value="{{ $tagItem->name }}" selected>{{ $tagItem->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -84,7 +102,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Nhập nội dung</label>
-                            <textarea name="contents" class="form-control my-editor" rows="8"></textarea>
+                            <textarea name="contents" class="form-control my-editor" rows="8">{{ $product->content }}</textarea>
                         </div>
                     </div>
                     <div class="col-md-12">
